@@ -1,3 +1,48 @@
+# ECE6383 High Speed Network Assignment2
+This project is forked from SPCL version htsim which is based on UEC htsim. This project is only for course assignment at NYU Tandon ECE6383
+
+## Project Structure
+```bash
+├── htsim
+│   ├── sim
+│   │   ├── BUILD.sh
+│   │   ├── datacenter
+│   │   │   ├── assignment2
+│   │   │   │   ├── task1
+│   │   │   │   ├── …
+│   │   │   ├── topologies
+│   │   │   │   ├── topo_assignment2
+│   │   │   ├── connection_matrices
+│   │   │   │   ├── cm_assignment2
+│   │   │   ├── htsim_uec  # Executable Binary File
+│   │   ├── build
+│   │   │   ├── parse_output
+│   │   │   ├── datacenter
+│   │   │   │   ├── htsim_uec  # Executable Binary File
+
+```
+
+You need to run command below to compile this project:
+``` bash
+$ cd uet-htsim/htsim/sim/
+$ chmod +x ./BUILD.sh
+$ ./BUILD.sh
+
+```
+
+## Project Description
+
+This project is mainly focused on simulation of different load balancing algorithms and link failure(reduction).
+You can jump to folder [assignment2](./htsim/sim/datacenter/assignment2) to see more details about the instructions
+
+
+
+
+
+---
+
+Content below is original README.md from SPCL htsim
+
 # SPCL htsim
 
 This repository is a SPCL fork of the official UEC repository. We plan to support these features on top of the UE code:

@@ -1,0 +1,141 @@
+==========================================
+Core Switch Queue Usage Summary
+==========================================
+Generated: Sat Nov  8 09:24:35 EST 2025
+
+Total events:    16000
+
+----------------------------------------
+Switch: Switch_Core_0 (ID: 131)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_1 (ID: 133
+151
+153
+155
+157
+159
+161)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=64 avg=6 bytes
+  Samples: 7000
+
+----------------------------------------
+Switch: Switch_Core_10 (ID: 151)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_11 (ID: 153)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_12 (ID: 155)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_13 (ID: 157)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_14 (ID: 159)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=64 avg=43 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_15 (ID: 161)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_2 (ID: 135)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_3 (ID: 137)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_4 (ID: 139)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_5 (ID: 141)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_6 (ID: 143)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_7 (ID: 145)
+----------------------------------------
+  LastQ: min=0 max=1500 avg=1000 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=2664 avg=1009 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_8 (ID: 147)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+
+----------------------------------------
+Switch: Switch_Core_9 (ID: 149)
+----------------------------------------
+  LastQ: min=0 max=0 avg=0 bytes
+  MinQ:  min=0 max=0 avg=0 bytes
+  MaxQ:  min=0 max=0 avg=0 bytes
+  Samples: 1000
+

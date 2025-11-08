@@ -1,0 +1,261 @@
+
+============================================================
+Flow Completion Time (FCT) Analysis
+============================================================
+
+Found 30 flow completion(s):
+
+Flow 1: flow_0_112
+  FCT: 19694.90 us (19.69 ms)
+  Size: 50,000,000 bytes (47.68 MB)
+  Throughput: 20.31 Gbps
+  Packets: 12048
+  Start: 13.50 us
+  End: 19708.40 us
+
+Flow 2: flow_1_113
+  FCT: 23378.11 us (23.38 ms)
+  Size: 50,000,000 bytes (47.68 MB)
+  Throughput: 17.11 Gbps
+  Packets: 12048
+  Start: 14.09 us
+  End: 23392.20 us
+
+Flow 3: flow_2_114
+  FCT: 23690.90 us (23.69 ms)
+  Size: 50,000,000 bytes (47.68 MB)
+  Throughput: 16.88 Gbps
+  Packets: 12048
+  Start: 13.50 us
+  End: 23704.40 us
+
+Flow 4: flow_3_115
+  FCT: 19836.58 us (19.84 ms)
+  Size: 50,000,000 bytes (47.68 MB)
+  Throughput: 20.16 Gbps
+  Packets: 12048
+  Start: 13.62 us
+  End: 19850.20 us
+
+Flow 5: flow_4_116
+  FCT: 23312.60 us (23.31 ms)
+  Size: 50,000,000 bytes (47.68 MB)
+  Throughput: 17.16 Gbps
+  Packets: 12048
+  Start: 13.50 us
+  End: 23326.10 us
+
+Flow 6: flow_5_117
+  FCT: 23283.60 us (23.28 ms)
+  Size: 50,000,000 bytes (47.68 MB)
+  Throughput: 17.18 Gbps
+  Packets: 12048
+  Start: 13.50 us
+  End: 23297.10 us
+
+Flow 7: flow_8_64
+  FCT: 13910.20 us (13.91 ms)
+  Size: 30,000,000 bytes (28.61 MB)
+  Throughput: 17.25 Gbps
+  Packets: 7228
+  Start: 10000.00 us
+  End: 23910.20 us
+
+Flow 8: flow_16_64
+  FCT: 6025.70 us (6.03 ms)
+  Size: 30,000,000 bytes (28.61 MB)
+  Throughput: 39.83 Gbps
+  Packets: 7228
+  Start: 10000.00 us
+  End: 16025.70 us
+
+Flow 9: flow_24_64
+  FCT: 6372.70 us (6.37 ms)
+  Size: 30,000,000 bytes (28.61 MB)
+  Throughput: 37.66 Gbps
+  Packets: 7228
+  Start: 10000.00 us
+  End: 16372.70 us
+
+Flow 10: flow_32_64
+  FCT: 5030.40 us (5.03 ms)
+  Size: 30,000,000 bytes (28.61 MB)
+  Throughput: 47.71 Gbps
+  Packets: 7228
+  Start: 10000.00 us
+  End: 15030.40 us
+
+Flow 11: flow_40_64
+  FCT: 5631.90 us (5.63 ms)
+  Size: 30,000,000 bytes (28.61 MB)
+  Throughput: 42.61 Gbps
+  Packets: 7228
+  Start: 10000.00 us
+  End: 15631.90 us
+
+Flow 12: flow_48_64
+  FCT: 4965.30 us (4.97 ms)
+  Size: 30,000,000 bytes (28.61 MB)
+  Throughput: 48.34 Gbps
+  Packets: 7228
+  Start: 10000.00 us
+  End: 14965.30 us
+
+Flow 13: flow_56_64
+  FCT: 5474.90 us (5.47 ms)
+  Size: 30,000,000 bytes (28.61 MB)
+  Throughput: 43.84 Gbps
+  Packets: 7228
+  Start: 10000.00 us
+  End: 15474.90 us
+
+Flow 14: flow_96_10
+  FCT: 6784.30 us (6.78 ms)
+  Size: 40,000,000 bytes (38.15 MB)
+  Throughput: 47.17 Gbps
+  Packets: 9638
+  Start: 20000.00 us
+  End: 26784.30 us
+
+Flow 15: flow_96_26
+  FCT: 6777.20 us (6.78 ms)
+  Size: 40,000,000 bytes (38.15 MB)
+  Throughput: 47.22 Gbps
+  Packets: 9638
+  Start: 20000.00 us
+  End: 26777.20 us
+
+Flow 16: flow_96_42
+  FCT: 6777.50 us (6.78 ms)
+  Size: 40,000,000 bytes (38.15 MB)
+  Throughput: 47.22 Gbps
+  Packets: 9638
+  Start: 20000.00 us
+  End: 26777.50 us
+
+Flow 17: flow_96_58
+  FCT: 6781.50 us (6.78 ms)
+  Size: 40,000,000 bytes (38.15 MB)
+  Throughput: 47.19 Gbps
+  Packets: 9638
+  Start: 20000.00 us
+  End: 26781.50 us
+
+Flow 18: flow_96_74
+  FCT: 6784.90 us (6.78 ms)
+  Size: 40,000,000 bytes (38.15 MB)
+  Throughput: 47.16 Gbps
+  Packets: 9638
+  Start: 20000.00 us
+  End: 26784.90 us
+
+Flow 19: flow_96_90
+  FCT: 6782.90 us (6.78 ms)
+  Size: 40,000,000 bytes (38.15 MB)
+  Throughput: 47.18 Gbps
+  Packets: 9638
+  Start: 20000.00 us
+  End: 26782.90 us
+
+Flow 20: flow_96_106
+  FCT: 6646.40 us (6.65 ms)
+  Size: 40,000,000 bytes (38.15 MB)
+  Throughput: 48.15 Gbps
+  Packets: 9638
+  Start: 20000.00 us
+  End: 26646.40 us
+
+Flow 21: flow_96_122
+  FCT: 6784.60 us (6.78 ms)
+  Size: 40,000,000 bytes (38.15 MB)
+  Throughput: 47.17 Gbps
+  Packets: 9638
+  Start: 20000.00 us
+  End: 26784.60 us
+
+Flow 22: flow_6_80
+  FCT: 19983.80 us (19.98 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 24.02 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 24983.80 us
+
+Flow 23: flow_7_81
+  FCT: 20445.10 us (20.45 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 23.48 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 25445.10 us
+
+Flow 24: flow_9_82
+  FCT: 23020.80 us (23.02 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 20.85 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 28020.80 us
+
+Flow 25: flow_10_83
+  FCT: 23210.20 us (23.21 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 20.68 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 28210.20 us
+
+Flow 26: flow_11_84
+  FCT: 21365.10 us (21.37 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 22.47 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 26365.10 us
+
+Flow 27: flow_12_85
+  FCT: 19156.70 us (19.16 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 25.06 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 24156.70 us
+
+Flow 28: flow_13_86
+  FCT: 20412.40 us (20.41 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 23.52 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 25412.40 us
+
+Flow 29: flow_14_87
+  FCT: 21700.90 us (21.70 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 22.12 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 26700.90 us
+
+Flow 30: flow_15_88
+  FCT: 21134.30 us (21.13 ms)
+  Size: 60,000,000 bytes (57.22 MB)
+  Throughput: 22.71 Gbps
+  Packets: 14457
+  Start: 5000.00 us
+  End: 26134.30 us
+
+
+============================================================
+FCT Statistics:
+============================================================
+  Count:    30
+  Mean:     14171.88 us (14.17 ms)
+  Median:   16533.45 us (16.53 ms)
+  Min:      4965.30 us (4.97 ms)
+  Max:      23690.90 us (23.69 ms)
+  P50:      19156.70 us (19.16 ms)
+  P95:      23378.11 us (23.38 ms)
+  P99:      23690.90 us (23.69 ms)
+============================================================
+

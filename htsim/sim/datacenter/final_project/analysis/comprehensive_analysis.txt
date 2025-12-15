@@ -1,0 +1,10 @@
+Comprehensive Results Analysis
+==============================
+Generated: Sat Dec 13 19:21:54 EST 2025
+Results directory: results_strict_priority_mixed
+
+
+===========================================
+Cross-Scenario Comparison Summary
+===========================================
+

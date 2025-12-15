@@ -2,6 +2,9 @@
 #include "uec_mp.h"
 
 #include <iostream>
+#include <algorithm>  // for std::find
+#include <vector>
+#include <cmath>  // for sqrt
 
 
 UecMpOblivious::UecMpOblivious(uint16_t no_of_paths,
@@ -165,34 +168,271 @@ void UecMpReps::processEv(uint16_t path_id, PathFeedback feedback) {
         circular_buffer_reps->setFrozenMode(false);
         circular_buffer_reps->resetBuffer();
         circular_buffer_reps->explore_counter = 16;
+        // Clear MQL grouping when buffer is reset
+        if (_use_mql) {
+            _paths_by_mql_level.clear();
+        }
     }
 
     if ((feedback == PATH_GOOD) && !circular_buffer_reps->isFrozenMode()) {
         circular_buffer_reps->add(path_id);
+        // If MQL is enabled and we know MQL for this path, add to grouping
+        if (_use_mql && _path_mql_map.count(path_id)) {
+            addPathToGrouping(path_id, _path_mql_map[path_id]);
+        }
     } else if (circular_buffer_reps->isFrozenMode() && (feedback == PATH_GOOD)) {
         circular_buffer_reps->add(path_id);
+        // If MQL is enabled and we know MQL for this path, add to grouping
+        if (_use_mql && _path_mql_map.count(path_id)) {
+            addPathToGrouping(path_id, _path_mql_map[path_id]);
+        }
+    }
+}
+
+// Helper method to remove path from MQL grouping
+void UecMpReps::removePathFromGrouping(uint16_t path_id) {
+    for (auto& [level, paths] : _paths_by_mql_level) {
+        auto it = std::find(paths.begin(), paths.end(), path_id);
+        if (it != paths.end()) {
+            paths.erase(it);
+            if (paths.empty()) {
+                _paths_by_mql_level.erase(level);
+            }
+            return;
+        }
+    }
+}
+
+// Helper method to add path to MQL grouping
+void UecMpReps::addPathToGrouping(uint16_t path_id, uint8_t mql_level) {
+    // Only add if path is actually in the buffer
+    if (circular_buffer_reps->containsEntropy(path_id)) {
+        // Remove from old grouping first
+        removePathFromGrouping(path_id);
+        // Add to new grouping
+        _paths_by_mql_level[mql_level].push_back(path_id);
+    }
+}
+
+// Helper method to update MQL grouping when MQL changes
+void UecMpReps::updateMqlGrouping(uint16_t path_id, uint8_t old_mql, uint8_t new_mql) {
+    // Only update if path is in buffer
+    if (circular_buffer_reps->containsEntropy(path_id)) {
+        removePathFromGrouping(path_id);
+        addPathToGrouping(path_id, new_mql);
+    }
+}
+
+// Process MQL feedback for SMaRTT-REPS-CONGA
+void UecMpReps::processMql(uint16_t path_id, uint8_t mql_level) {
+    // Get old MQL if exists
+    uint8_t old_mql = _path_mql_map.count(path_id) ? _path_mql_map[path_id] : 7;
+    
+    // Update MQL for this path
+    _path_mql_map[path_id] = mql_level;
+    
+    // Update MQL grouping if enabled
+    if (_use_mql) {
+        updateMqlGrouping(path_id, old_mql, mql_level);
+    }
+    
+    // Update statistics
+    _stats.mql_updates++;
+    _stats.mql_level_distribution[mql_level]++;
+    
+    if (_debug) {
+        cout << "REPS processMql: path_id=" << path_id 
+             << " mql=" << (int)mql_level << endl;
     }
 }
 
 uint16_t UecMpReps::nextEntropy(uint64_t seq_sent, uint64_t cur_cwnd_in_pkts) {
+    // Update statistics
+    _stats.total_selections++;
+    
     if (circular_buffer_reps->explore_counter > 0) {
         circular_buffer_reps->explore_counter--;
-        return rand() % _no_of_paths;
+        uint16_t selected = rand() % _no_of_paths;
+        _stats.path_selection_count[selected]++;
+        return selected;
     }
 
+    // MQL-based path selection for SMaRTT-REPS-CONGA
+    // Strict priority: select randomly from the lowest available MQL level group
+    if (_use_mql && !_paths_by_mql_level.empty()) {
+        // Strict priority order: iterate from lowest MQL (0) to highest (7)
+        for (uint8_t level = 0; level <= 7; level++) {
+            if (_paths_by_mql_level.count(level) && !_paths_by_mql_level[level].empty()) {
+                vector<uint16_t>& paths_at_level = _paths_by_mql_level[level];
+                
+                // Filter paths that are still in buffer (in case buffer was modified)
+                vector<uint16_t> valid_paths;
+                for (uint16_t path_id : paths_at_level) {
+                    if (circular_buffer_reps->containsEntropy(path_id)) {
+                        valid_paths.push_back(path_id);
+                    }
+                }
+                
+                if (!valid_paths.empty()) {
+                    // Randomly choose one path from this MQL level group
+                    uint16_t selected_path = valid_paths[rand() % valid_paths.size()];
+                    
+                    // Remove selected path from buffer (need to find and remove)
+                    // Since CircularBufferREPS doesn't support direct removal by path_id,
+                    // we use a workaround: remove all paths, then add back the unselected ones
+                    vector<uint16_t> temp_paths;
+                    
+                    // Collect all paths from buffer
+                    while (!circular_buffer_reps->isEmpty() && 
+                           circular_buffer_reps->getNumberFreshEntropies() > 0) {
+                        uint16_t path_id;
+                        if (circular_buffer_reps->isFrozenMode()) {
+                            path_id = circular_buffer_reps->remove_frozen();
+                        } else {
+                            path_id = circular_buffer_reps->remove_earliest_fresh();
+                        }
+                        if (path_id != selected_path) {
+                            temp_paths.push_back(path_id);
+                        }
+                    }
+                    
+                    // Put unselected paths back to buffer
+                    for (uint16_t path_id : temp_paths) {
+                        circular_buffer_reps->add(path_id);
+                    }
+                    
+                    // Remove selected path from MQL grouping
+                    removePathFromGrouping(selected_path);
+                    
+                    // Update statistics
+                    _stats.mql_based_selections++;
+                    _stats.path_selection_count[selected_path]++;
+                    
+                    if (_debug) {
+                        cout << "REPS MQL strict priority selection: path=" << selected_path 
+                             << " mql=" << (int)level 
+                             << " level_group_size=" << valid_paths.size() << endl;
+                    }
+                    
+                    return selected_path;
+                } else {
+                    // Clean up invalid paths from this level
+                    _paths_by_mql_level[level].clear();
+                }
+            }
+        }
+        
+        // If we reach here, all paths in grouping are invalid, clear grouping
+        _paths_by_mql_level.clear();
+    }
+    
+    // Fall back to original REPS logic
+    uint16_t selected;
     if (circular_buffer_reps->isFrozenMode()) {
         if (circular_buffer_reps->isEmpty()) {
-            return rand() % _no_of_paths;
+            selected = rand() % _no_of_paths;
         } else {
-            return circular_buffer_reps->remove_frozen();
+            selected = circular_buffer_reps->remove_frozen();
         }
     } else {
         if (circular_buffer_reps->isEmpty() || circular_buffer_reps->getNumberFreshEntropies() == 0) {
-            return _crt_path = rand() % _no_of_paths;
+            selected = _crt_path = rand() % _no_of_paths;
         } else {
-            return circular_buffer_reps->remove_earliest_fresh();
+            selected = circular_buffer_reps->remove_earliest_fresh();
         }
     }
+    
+    // Update statistics
+    _stats.path_selection_count[selected]++;
+    return selected;
+}
+
+// Print MQL statistics
+void UecMpReps::printStats() const {
+    if (!_use_mql) {
+        cout << "MQL-based path selection is disabled" << endl;
+        return;
+    }
+    
+    cout << "\n========== REPS MQL Statistics ==========" << endl;
+    cout << "Total path selections: " << _stats.total_selections << endl;
+    if (_stats.total_selections > 0) {
+        cout << "MQL-based selections: " << _stats.mql_based_selections 
+             << " (" << (100.0 * _stats.mql_based_selections / _stats.total_selections) << "%)" << endl;
+    }
+    cout << "MQL updates received: " << _stats.mql_updates << endl;
+    
+    if (_stats.mql_updates > 0) {
+        cout << "\nMQL Level Distribution:" << endl;
+        for (uint8_t level = 0; level <= 7; level++) {
+            auto it = _stats.mql_level_distribution.find(level);
+            uint64_t count = (it != _stats.mql_level_distribution.end()) ? it->second : 0;
+            if (count > 0) {
+                cout << "  Level " << (int)level << ": " << count 
+                     << " (" << (100.0 * count / _stats.mql_updates) << "%)" << endl;
+            }
+        }
+    }
+    
+    if (!_stats.path_selection_count.empty()) {
+        // Calculate utilization balance statistics
+        vector<uint64_t> selection_counts;
+        for (const auto& [path_id, count] : _stats.path_selection_count) {
+            selection_counts.push_back(count);
+        }
+        
+        // Calculate mean, variance, std_dev for utilization balance
+        if (!selection_counts.empty()) {
+            double mean = 0.0;
+            for (uint64_t count : selection_counts) {
+                mean += count;
+            }
+            mean /= selection_counts.size();
+            
+            double variance = 0.0;
+            for (uint64_t count : selection_counts) {
+                variance += (count - mean) * (count - mean);
+            }
+            variance /= selection_counts.size();
+            double std_dev = sqrt(variance);
+            double cv = (mean > 0) ? (std_dev / mean) : 0.0;  // Coefficient of Variation
+            
+            cout << "\nPath Selection Distribution (Utilization Balance):" << endl;
+            cout << "  Total paths used: " << selection_counts.size() << endl;
+            cout << "  Mean selections per path: " << mean << endl;
+            cout << "  Std deviation: " << std_dev << endl;
+            cout << "  Coefficient of Variation (CV): " << cv 
+                 << " (lower = better balance)" << endl;
+            
+            // Find min and max
+            uint64_t min_selections = *min_element(selection_counts.begin(), selection_counts.end());
+            uint64_t max_selections = *max_element(selection_counts.begin(), selection_counts.end());
+            cout << "  Min selections: " << min_selections << endl;
+            cout << "  Max selections: " << max_selections << endl;
+            if (mean > 0) {
+                cout << "  Imbalance ratio (max/min): " << (double(max_selections) / min_selections) << endl;
+            }
+        }
+        
+        cout << "\nTop 10 Most Selected Paths:" << endl;
+        vector<pair<uint16_t, uint64_t>> sorted_paths(_stats.path_selection_count.begin(), 
+                                                        _stats.path_selection_count.end());
+        sort(sorted_paths.begin(), sorted_paths.end(), 
+             [](const auto& a, const auto& b) { return a.second > b.second; });
+        
+        for (size_t i = 0; i < min(size_t(10), sorted_paths.size()); i++) {
+            cout << "  Path " << sorted_paths[i].first << ": " << sorted_paths[i].second 
+                 << " (" << (100.0 * sorted_paths[i].second / _stats.total_selections) << "%)" << endl;
+        }
+        
+        // Output all path selections for detailed analysis
+        cout << "\nAll Path Selection Counts (for utilization balance analysis):" << endl;
+        cout << "Path_ID:Selection_Count" << endl;
+        for (const auto& [path_id, count] : _stats.path_selection_count) {
+            cout << path_id << ":" << count << endl;
+        }
+    }
+    cout << "=========================================" << endl;
 }
 
 

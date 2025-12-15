@@ -64,6 +64,9 @@ class BaseQueue  : public EventSource, public PacketSink, public Drawable {
 
     virtual uint64_t quantized_queuesize();
     virtual uint8_t quantized_utilization();
+    
+    // MQL quantization for SMaRTT-REPS-CONGA (3-bit: 0-7)
+    virtual uint8_t quantizeQueueLengthMQL() const;
 
     static simtime_picosec _update_period;
 

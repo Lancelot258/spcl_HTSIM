@@ -1,0 +1,123 @@
+Three Key Metrics Extraction Report
+====================================
+Generated: Sat Dec 13 19:25:05 EST 2025
+Output directory: results_final_fixed_20251213_192435/all_to_all/
+
+
+===========================================
+METRIC 1: QUEUE LENGTH
+===========================================
+
+
+Algorithm: ECMP
+----------------------------------------
+  Total packets: 1537004
+  NACKs (queue drops indicator): 11098
+  Retransmissions: 15552
+  Queue log not available: ecmp_logout.dat
+
+Algorithm: REPS (ECN)
+----------------------------------------
+  Total packets: 1537004
+  NACKs (queue drops indicator): 12835
+  Retransmissions: 15592
+  Queue log not available: reps_ecn_logout.dat
+
+Algorithm: REPS-CONGA (MQL)
+----------------------------------------
+  Total packets: 1537004
+  NACKs (queue drops indicator): 13151
+  Retransmissions: 15926
+  Queue log not available: reps_conga_logout.dat
+
+===========================================
+METRIC 2: PACKET REORDERING RATIO
+===========================================
+
+
+Algorithm: ECMP
+----------------------------------------
+  Total packets: 1537004
+  NACKs (out-of-order indicator): 11098
+  NACK ratio: .0072 (.7200%)
+  Retransmission ratio: .0101 (1.0100%)
+  Packet reordering ratio: ~.0072 (.7200%)
+
+Algorithm: REPS (ECN)
+----------------------------------------
+  Total packets: 1537004
+  NACKs (out-of-order indicator): 12835
+  NACK ratio: .0083 (.8300%)
+  Retransmission ratio: .0101 (1.0100%)
+  Packet reordering ratio: ~.0083 (.8300%)
+
+Algorithm: REPS-CONGA (MQL)
+----------------------------------------
+  Total packets: 1537004
+  NACKs (out-of-order indicator): 13151
+  NACK ratio: .0085 (.8500%)
+  Retransmission ratio: .0103 (1.0300%)
+  Packet reordering ratio: ~.0085 (.8500%)
+
+===========================================
+METRIC 3: LINK UTILIZATION BALANCE
+===========================================
+
+
+Algorithm: ECMP
+----------------------------------------
+  Total packets: 1537004
+  Number of paths: 256
+  Average packets per path: 6003.92
+
+  Balance indicators:
+    - Retransmissions: 15552 (lower = better balance)
+    - NACKs: 11098 (lower = less congestion, better balance)
+    - Retransmission rate: .0101
+    - NACK rate: .0072
+
+  Note: Lower retransmission/NACK rates suggest better
+        load balancing and link utilization balance.
+
+  Detailed per-path statistics not available in output.
+  (Would require enabling path selection logging in code)
+
+Algorithm: REPS (ECN)
+----------------------------------------
+  Total packets: 1537004
+  Number of paths: 256
+  Average packets per path: 6003.92
+
+  Balance indicators:
+    - Retransmissions: 15592 (lower = better balance)
+    - NACKs: 12835 (lower = less congestion, better balance)
+    - Retransmission rate: .0101
+    - NACK rate: .0083
+
+  Note: Lower retransmission/NACK rates suggest better
+        load balancing and link utilization balance.
+
+  Detailed per-path statistics not available in output.
+  (Would require enabling path selection logging in code)
+
+Algorithm: REPS-CONGA (MQL)
+----------------------------------------
+  Total packets: 1537004
+  Number of paths: 256
+  Average packets per path: 6003.92
+
+  Balance indicators:
+    - Retransmissions: 15926 (lower = better balance)
+    - NACKs: 13151 (lower = less congestion, better balance)
+    - Retransmission rate: .0103
+    - NACK rate: .0085
+
+  Note: Lower retransmission/NACK rates suggest better
+        load balancing and link utilization balance.
+
+  Detailed per-path statistics not available in output.
+  (Would require enabling path selection logging in code)
+
+===========================================
+Extraction Complete
+===========================================

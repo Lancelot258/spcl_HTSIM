@@ -114,6 +114,29 @@ BaseQueue::quantized_queuesize(){
     return _last_qs;
 }
 
+// MQL quantization for SMaRTT-REPS-CONGA
+// Maps queue length to 3-bit level (0-7)
+// This provides finer-grained congestion signal than ECN
+uint8_t
+BaseQueue::quantizeQueueLengthMQL() const {
+    mem_b qsize = queuesize();
+    mem_b pkt_size = Packet::data_packet_size();
+    
+    // Convert to packets
+    uint32_t qsize_pkts = (qsize + pkt_size - 1) / pkt_size;
+    
+    // 8-level quantization (0-7) optimized for small queues (20-50 packets)
+    // Provides exponential-like spacing to capture both early signs and severe congestion
+    if (qsize_pkts == 0) return 0;       // Empty
+    if (qsize_pkts <= 2) return 1;       // Very low (0-10%)
+    if (qsize_pkts <= 5) return 2;       // Low (10-25%)
+    if (qsize_pkts <= 10) return 3;      // Moderate-low (25-50%)
+    if (qsize_pkts <= 15) return 4;      // Moderate (50-75%)
+    if (qsize_pkts <= 22) return 5;      // High (75-110%)
+    if (qsize_pkts <= 35) return 6;      // Very high (110-175%)
+    return 7;                             // Severe (175%+)
+}
+
 
 Queue::Queue(linkspeed_bps bitrate, mem_b maxsize, EventList& eventlist, 
              QueueLogger* logger)

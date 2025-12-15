@@ -1,0 +1,17 @@
+==========================================
+Extracting Three Key Metrics
+==========================================
+Output directory: results_final_fixed_20251213_192435/severe_incast/
+
+Metric 1: Extracting Queue Length Statistics...
+
+Metric 2: Extracting Packet Reordering Ratio...
+
+Metric 3: Extracting Link Utilization Balance...
+Extraction complete. Summary:
+  - Maximum/Average Queue Length: Extracted
+  - Packet Reordering Ratio: Extracted
+  - Link Utilization Balance: Extracted
+
+Full report saved to: results_final_fixed_20251213_192435/severe_incast//three_metrics_extracted.txt
+Report size: 4.0K

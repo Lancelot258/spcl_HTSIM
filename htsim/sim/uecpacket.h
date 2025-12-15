@@ -67,6 +67,8 @@ public:
         p->_path_len = route.size();
         p->_trim_hop = {};
         p->_trim_direction = NONE;
+        
+        p->_mql_level = 0;  // Initialize MQL to 0 (will be updated along path)
 
         return p;
     }
@@ -112,6 +114,12 @@ public:
     inline packet_direction trim_direction() const {return _trim_direction;}
 
     inline int32_t path_id() const {if (_pathid!=UINT32_MAX) return _pathid; else return _route->path_id();}
+    
+    // MQL accessors
+    inline uint8_t mql_level() const { return _mql_level; }
+    inline void set_mql_level(uint8_t level) { 
+        _mql_level = (level > 7) ? 7 : level;  // Ensure 0-7 range
+    }
 
     virtual PktPriority priority() const {
         if (_is_header) {
@@ -136,6 +144,10 @@ protected:
     //trim information, need to see if this stays here or goes to separate header.
     std::optional<int32_t> _trim_hop;
     packet_direction _trim_direction;
+    
+    // MQL (Maximum Queue Length) for SMaRTT-REPS-CONGA
+    uint8_t _mql_level;  // 3-bit queue length level (0-7), records max along path
+    
     static PacketDB<UecDataPacket> _packetdb;
 };
 
@@ -218,6 +230,7 @@ public:
 
         p->_recvd_bytes = recv_bytes;
         p->_rcv_cwnd_pen = rcv_wnd_pen;
+        p->_mql_level = 0;  // Initialize MQL (will be set by receiver)
         return p;
     }
   
@@ -244,6 +257,12 @@ public:
     inline bool is_probe_ack() const {return _is_probe_ack;}
     inline void set_rtx_echo(bool rtx_bit){_rtx_echo = rtx_bit;};
     inline bool rtx_echo() const {return _rtx_echo;}
+    
+    // MQL accessors for feedback
+    inline uint8_t mql_level() const { return _mql_level; }
+    inline void set_mql_level(uint8_t level) { 
+        _mql_level = (level > 7) ? 7 : level;
+    }
 
     virtual ~UecAckPacket(){}
 
@@ -267,6 +286,9 @@ protected:
     simtime_picosec _residency_time;
     uint32_t _out_of_order_count;
     bool _is_probe_ack;
+    
+    // MQL (Maximum Queue Length) feedback for SMaRTT-REPS-CONGA
+    uint8_t _mql_level;  // Feedback of path congestion level (0-7)
 
     static PacketDB<UecAckPacket> _packetdb;
 };

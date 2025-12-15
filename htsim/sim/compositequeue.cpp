@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include "ecn.h"
+#include "uecpacket.h"  // For MQL update in SMaRTT-REPS-CONGA
 
 static int global_queue_id=0;
 #define DEBUG_QUEUE_ID -1 // set to queue ID to enable debugging
@@ -157,6 +158,16 @@ void CompositeQueue::receivePacket(Packet& pkt)
     }
     pkt.flow().logTraffic(pkt,*this,TrafficLogger::PKT_ARRIVE);
     if (_logger) _logger->logQueue(*this, QueueLogger::PKT_ARRIVE, pkt);
+    
+    // Update MQL for SMaRTT-REPS-CONGA
+    // UecDataPacket records maximum queue length along path
+    if (UecDataPacket* uec_pkt = dynamic_cast<UecDataPacket*>(&pkt)) {
+        uint8_t local_mql = quantizeQueueLengthMQL();
+        uint8_t current_mql = uec_pkt->mql_level();
+        if (local_mql > current_mql) {
+            uec_pkt->set_mql_level(local_mql);
+        }
+    }
 
     if (!pkt.header_only()){
         if (_queuesize_low+pkt.size() <= _maxsize  || drand()<0.5) {

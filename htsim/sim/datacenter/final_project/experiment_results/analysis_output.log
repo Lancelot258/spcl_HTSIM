@@ -1,0 +1,113 @@
+==========================================
+Final Results Analysis
+==========================================
+Results directory: results_final_fixed_20251213_192435
+
+Comprehensive Results Analysis
+==============================
+Generated: Sat Dec 13 19:25:06 EST 2025
+Results directory: results_final_fixed_20251213_192435
+
+Analyzing scenario: all_to_all
+===========================================
+
+Metric Summary Table:
+Algorithm | Total | RTX | RTX% | NACKs | Reorder% | CV | Imbalance
+----------|-------|-----|------|-------|----------|----|-----------
+ECMP|1537004|15552|1.0118|11098|.7220||
+REPS (ECN)|1537004|15592|1.0144|12835|.8350||
+REPS-CONGA (MQL)|1537004|15926|1.0361|13151|.8556|0.27106|7
+
+Detailed Analysis:
+
+--- ECMP ---
+1. Queue Length (NACKs): 11098
+2. Packet Reordering Ratio: .0072 (.7200%)
+3. Link Utilization Balance: Not available
+
+--- REPS (ECN) ---
+1. Queue Length (NACKs): 12835
+2. Packet Reordering Ratio: .0083 (.8300%)
+3. Link Utilization Balance: Not available
+
+--- REPS-CONGA (MQL) ---
+1. Queue Length (NACKs): 13151
+2. Packet Reordering Ratio: .0085 (.8500%)
+3. Link Utilization Balance:
+   CV: 0.27106 (lower = better)
+   Imbalance ratio: 7 (closer to 1.0 = better)
+
+
+Analyzing scenario: mixed_traffic
+===========================================
+
+Metric Summary Table:
+Algorithm | Total | RTX | RTX% | NACKs | Reorder% | CV | Imbalance
+----------|-------|-----|------|-------|----------|----|-----------
+ECMP|228946|2589|1.1308|2548|1.1129||
+REPS (ECN)|228946|3055|1.3343|3016|1.3173||
+REPS-CONGA (MQL)|228946|3008|1.3138|2990|1.3059|0.123692|1.74699
+
+Detailed Analysis:
+
+--- ECMP ---
+1. Queue Length (NACKs): 2548
+2. Packet Reordering Ratio: .0111 (1.1100%)
+3. Link Utilization Balance: Not available
+
+--- REPS (ECN) ---
+1. Queue Length (NACKs): 3016
+2. Packet Reordering Ratio: .0131 (1.3100%)
+3. Link Utilization Balance: Not available
+
+--- REPS-CONGA (MQL) ---
+1. Queue Length (NACKs): 2990
+2. Packet Reordering Ratio: .0130 (1.3000%)
+3. Link Utilization Balance:
+   CV: 0.123692 (lower = better)
+   Imbalance ratio: 1.74699 (closer to 1.0 = better)
+
+
+Analyzing scenario: severe_incast
+===========================================
+
+Metric Summary Table:
+Algorithm | Total | RTX | RTX% | NACKs | Reorder% | CV | Imbalance
+----------|-------|-----|------|-------|----------|----|-----------
+ECMP|222848|64511|28.9484|61955|27.8014||
+REPS (ECN)|222848|65471|29.3792|62875|28.2142||
+REPS-CONGA (MQL)|222848|65778|29.5169|63256|28.3852|2.7902|1555
+
+Detailed Analysis:
+
+--- ECMP ---
+1. Queue Length (NACKs): 61955
+2. Packet Reordering Ratio: .2780 (27.8000%)
+3. Link Utilization Balance: Not available
+
+--- REPS (ECN) ---
+1. Queue Length (NACKs): 62875
+2. Packet Reordering Ratio: .2821 (28.2100%)
+3. Link Utilization Balance: Not available
+
+--- REPS-CONGA (MQL) ---
+1. Queue Length (NACKs): 63256
+2. Packet Reordering Ratio: .2838 (28.3800%)
+3. Link Utilization Balance:
+   CV: 2.7902 (lower = better)
+   Imbalance ratio: 1555 (closer to 1.0 = better)
+
+
+
+===========================================
+Cross-Scenario Comparison Summary
+===========================================
+
+
+==========================================
+Analysis Complete
+==========================================
+Full report saved to: results_final_fixed_20251213_192435/comprehensive_analysis.txt
+
+CSV summary saved to: results_final_fixed_20251213_192435/results_summary.csv
+

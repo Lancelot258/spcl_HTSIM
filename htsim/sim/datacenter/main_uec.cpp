@@ -88,6 +88,9 @@ int main(int argc, char **argv) {
 
     enum LoadBalancing_Algo { BITMAP, REPS, REPS_LEGACY, OBLIVIOUS, MIXED, ECMP};
     LoadBalancing_Algo load_balancing_algo = MIXED;
+    
+    // SMaRTT-REPS-CONGA: Enable MQL-based path selection
+    bool use_conga = false;
 
     bool log_sink = false;
     bool log_nic = false;
@@ -248,6 +251,10 @@ int main(int argc, char **argv) {
             }
             cout << "Load balancing algorithm set to  "<< argv[i+1] << endl;
             i++;
+        }
+        else if (!strcmp(argv[i],"-use_conga")){
+            use_conga = true;
+            cout << "SMaRTT-REPS-CONGA enabled: Using MQL-based path selection" << endl;
         }
         else if (!strcmp(argv[i],"-queue_type")) {
             if (!strcmp(argv[i+1], "composite")) {
@@ -820,8 +827,10 @@ int main(int argc, char **argv) {
                 });
                 break;
             case REPS:
-                api->setMultipathFactory([path_entropy_size, disable_trim]() {
-                    return std::make_unique<UecMpReps>(path_entropy_size, UecSrc::_debug, !disable_trim);
+                api->setMultipathFactory([path_entropy_size, disable_trim, use_conga]() {
+                    auto mp = std::make_unique<UecMpReps>(path_entropy_size, UecSrc::_debug, !disable_trim);
+                    mp->setUseMql(use_conga);
+                    return mp;
                 });
                 break;
             case REPS_LEGACY:
@@ -894,7 +903,9 @@ int main(int argc, char **argv) {
             if (load_balancing_algo == BITMAP){
                 mp = make_unique<UecMpBitmap>(path_entropy_size, UecSrc::_debug);
             } else if (load_balancing_algo == REPS){
-                mp = make_unique<UecMpReps>(path_entropy_size, UecSrc::_debug, !disable_trim);
+                auto reps_mp = make_unique<UecMpReps>(path_entropy_size, UecSrc::_debug, !disable_trim);
+                reps_mp->setUseMql(use_conga);
+                mp = std::move(reps_mp);
             } else if (load_balancing_algo == REPS_LEGACY){
                 mp = make_unique<UecMpRepsLegacy>(path_entropy_size, UecSrc::_debug);
             }else if (load_balancing_algo == OBLIVIOUS){
@@ -1123,6 +1134,15 @@ int main(int argc, char **argv) {
         sleek_pkts += s._sleek_counter;
     }
     cout << "New: " << new_pkts << " Rtx: " << rtx_pkts << " RTS: " << rts_pkts << " Bounced: " << bounce_pkts << " ACKs: " << ack_pkts << " NACKs: " << nack_pkts << " Pulls: " << pull_pkts << " sleek_pkts: " << sleek_pkts << endl;
+    
+    // Print multipath statistics (path selection and utilization balance)
+    // This will output path selection distribution and utilization balance metrics
+    cout << "\n========== Aggregated Multipath Statistics ==========" << endl;
+    for (size_t ix = 0; ix < uec_srcs.size(); ix++) {
+        uec_srcs[ix]->printMultipathStats();
+    }
+    cout << "=====================================================" << endl;
+    
     /*
     list <const Route*>::iterator rt_i;
     int counts[10]; int hop;

@@ -201,6 +201,9 @@ public:
     bool isTotallyFinished();
 
     const Stats& stats() const { return _stats; }
+    
+    // Print multipath statistics (for path selection analysis)
+    void printMultipathStats() const;
 
     void setEndTrigger(Trigger& trigger);
     // called from a trigger to start the flow.
@@ -671,6 +674,10 @@ class UecSink : public DataReceiver {
 
     Stats _stats;
     string _nodename;
+    
+    // MQL feedback for SMaRTT-REPS-CONGA
+    // Maps path_id to MQL level (0-7)
+    map<uint16_t, uint8_t> _path_mql_map;
 
 public:
     static bool _oversubscribed_cc;
